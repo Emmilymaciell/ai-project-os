@@ -133,6 +133,13 @@ docs/             STATE, ARCHITECTURE, VISION, ADRs, manuais, referência técni
 tests/            suítes PowerShell da plataforma
 ```
 
+## Verificação, sanitização e licença
+
+- **Testes:** `py -3.13 -m unittest discover -s eos/tests -t .` → **375 testes OK (2 skipped)** em 19/11/2026. As suítes PowerShell estão em "Como rodar".
+- **Dados:** registry e exemplos fictícios; identificadores de clientes, caminhos locais e o registry real foram substituídos.
+- **Sanitização:** o que foi removido, trocado ou inventado nesta cópia está em [`SANITIZACAO.md`](SANITIZACAO.md).
+- **Licença:** todos os direitos reservados; leitura permitida para avaliação de portfólio — ver [`LICENSE`](LICENSE) e [`NOTICE`](NOTICE).
+
 ## Aviso
 
 *Dados fictícios. Versão sanitizada de um sistema em uso real; identificadores do cliente foram substituídos.* O nome do contrato corporativo aparece como "Programa" (categoria `PROG`), os projetos privados foram renomeados ou removidos e o registry contém apenas exemplos. Contato: perfil GitHub [@Emmilymaciell](https://github.com/Emmilymaciell).
