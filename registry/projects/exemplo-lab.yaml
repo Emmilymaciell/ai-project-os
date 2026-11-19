@@ -1,0 +1,60 @@
+# EXEMPLO FICTICIO (versao publica). Mesmo schema dos contratos reais; valores inventados.
+contract_version: 1
+identity:
+  id: exemplo-lab
+  name: Exemplo Lab (conversor de coordenadas)
+  type: PROJECT
+  category: LAB
+  status: active
+  criticality: low
+workspace:
+  local_path: '${AI_WORKSPACE}\ai-lab\exemplo-lab'
+git:
+  enabled: true
+  default_branch: main
+  remote: 'https://github.com/Emmilymaciell/lab-exemplo-lab'
+  visibility: private
+  worktrees_policy: preserve-all
+cloud:
+  drive_root: 05 LAB/exemplo-lab
+state:
+  strategy: git-only
+environment:
+  runtime: python
+  version: 3.13
+  manifest: requirements.txt
+  bootstrap: 'py -3.13 -m venv .venv; .\.venv\Scripts\python -m pip install -r requirements.txt'
+  test_command: '.\.venv\Scripts\python -m pytest tests -q'
+  smoke_command: 'py -3.13 -m venv .venv; if ($LASTEXITCODE) { exit 1 }; .\.venv\Scripts\python -m pip install -q -r requirements.txt; if ($LASTEXITCODE) { exit 1 }; .\.venv\Scripts\python -m pytest tests -q -p no:cacheprovider; exit $LASTEXITCODE'
+backup:
+  wip: snapshot
+ai:
+  canonical:
+    - docs/STATE.md
+  adapters:
+    - CLAUDE.md
+portability:
+  target_level: L6
+secrets:
+  manifest: .env.example
+  store: none
+data:
+  - path: output
+    policy: reproducible
+    note: saidas do CLI (exemplo)
+ownership:
+  declared_owner: Emmily Maciel
+  owner_github: Emmilymaciell
+  creators:
+    - Emmily Maciel
+  contributors: []
+  tool_accounts:
+    - 'assistentes de IA (Claude Code, Codex) usados como ferramenta, sem autoria'
+  license: proprietary
+  third_party: []
+  provenance_file: PROVENANCE.md
+  signing: required
+  identities:
+    - Emmily Maciel
+  evidence:
+    - 'exemplo: identidades Git do repo levantadas por git log --all'

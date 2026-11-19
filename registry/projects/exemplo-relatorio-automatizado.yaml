@@ -1,0 +1,71 @@
+# EXEMPLO FICTICIO (versao publica). Mesmo schema dos contratos reais; valores inventados.
+contract_version: 1
+identity:
+  id: exemplo-relatorio-automatizado
+  name: Exemplo Relatorio Automatizado
+  type: PROJECT
+  category: PROG
+  status: active
+  criticality: high
+workspace:
+  local_path: '${AI_WORKSPACE}\work\prog\exemplo-relatorio-automatizado'
+git:
+  enabled: true
+  default_branch: main
+  remote: 'https://github.com/Emmilymaciell/prog-exemplo-relatorio-automatizado'
+  visibility: private
+  worktrees_policy: preserve-all
+cloud:
+  drive_root: 01 PROG/exemplo-relatorio-automatizado
+external_sources:
+  - id: exemplo-sharepoint
+    type: sharepoint
+    role: source_documents
+    required_for_operation: true
+state:
+  strategy: git-only
+data:
+  - path: output
+    policy: cloud-mirror
+    note: 'relatorios gerados (exemplo)'
+  - path: tmp
+    policy: external
+    note: 'copias de documentos-fonte; a fonte e o SharePoint (contoso.sharepoint.com)'
+  - path: .ruff_cache
+    policy: none
+environment:
+  runtime: python
+  version: 3.12
+  manifest: pyproject.toml
+  bootstrap: 'py -3.12 -m venv .venv; .\.venv\Scripts\python -m pip install -e ".[dev]"'
+  test_command: '.\.venv\Scripts\python -m pytest'
+  smoke_command: 'py -3.12 -m venv .venv; if ($LASTEXITCODE) { exit 1 }; .\.venv\Scripts\python -m pip install -q -e ".[dev]"; if ($LASTEXITCODE) { exit 1 }; .\.venv\Scripts\python -m pytest -q -p no:cacheprovider; exit $LASTEXITCODE'
+backup:
+  wip: snapshot
+ai:
+  canonical:
+    - docs/STATE.md
+  adapters:
+    - CLAUDE.md
+portability:
+  target_level: L6
+secrets:
+  manifest: .env.example
+  store: bitwarden
+ownership:
+  declared_owner: Emmily Maciel
+  owner_github: Emmilymaciell
+  creators:
+    - Emmily Maciel
+  contributors: []
+  tool_accounts:
+    - 'assistentes de IA (Claude Code, Codex) usados como ferramenta, sem autoria'
+  employer_or_client: Programa (exemplo)
+  license: proprietary
+  third_party: []
+  provenance_file: PROVENANCE.md
+  signing: required
+  identities:
+    - Emmily Maciel
+  evidence:
+    - 'exemplo: identidades Git do repo levantadas por git log --all'

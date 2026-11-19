@@ -1,0 +1,21 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "emmily-platform",
+  "description": "Plataforma pessoal da Emmily: o Project OS e o que vier depois dele.",
+  "owner": {
+    "name": "Emmily Maciel",
+    "url": "https://github.com/Emmilymaciell"
+  },
+  "plugins": [
+    {
+      "name": "os",
+      "description": "Emmily AI Project OS — cria, governa, versiona, documenta e torna portateis os projetos de desenvolvimento assistido por IA.",
+      "author": {
+        "name": "Emmily Maciel",
+        "url": "https://github.com/Emmilymaciell"
+      },
+      "source": "./",
+      "category": "productivity"
+    }
+  ]
+}

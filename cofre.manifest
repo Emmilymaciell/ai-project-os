@@ -1,0 +1,10 @@
+# Manifesto do cofre: os segredos de que esta plataforma depende - NOMES e onde vivem. NUNCA valores.
+# (Nao se chama secrets.manifest porque o .gitignore desta plataforma ignora *secret*, e abrir excecao
+# num guarda de seguranca para acomodar um nome seria a direcao errada.)
+# Nenhum deles mora no repositorio nem em arquivo que o motor copie para a nuvem.
+#
+# nome                    | onde vive (nesta maquina)                     | como recriar numa maquina nova
+GITHUB_AUTH               | keyring do Windows, gerido pelo gh            | gh auth login (navegador)
+RCLONE_GDRIVE_TOKEN       | rclone.conf do usuario, gerido pelo rclone    | rclone config reconnect gdrive: (navegador)
+RCLONE_GDRIVE_OAUTH_CLIENT| Bitwarden item rclone-gdrive-oauth-client     | bw get item ... ; rclone config create gdrive drive client_id=.. client_secret=.. scope=drive (ADR-0013 emenda 2026-10-16)
+CLAUDE_CODE_OAUTH         | sessao do Claude Code                         | /login no Claude Code

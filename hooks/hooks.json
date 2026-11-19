@@ -1,0 +1,18 @@
+{
+  "description": "Guarda de git destrutivo para agentes: bloqueia checkout --, restore, reset --hard, clean -f, push forcado, rebase, commit --amend e afins emitidos pelas ferramentas Bash e PowerShell. So o bloqueio deliberado (2) bloqueia; guarda ausente, py ausente ou excecao liberam (falha aberta). Caminho do guarda: CLAUDE_PLUGIN_ROOT do ambiente, depois o argumento, so se absoluto com unidade. Ver docs/runbooks/hooks.md.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "py -3.13 -I -c \"import os,runpy,sys;e=os.environ.get('CLAUDE_PLUGIN_ROOT','');c=([os.path.join(e,'hooks','guarda_git.py')] if os.path.isabs(e) and os.path.splitdrive(e)[0] else [])+([sys.argv[1]] if len(sys.argv)>1 and os.path.isabs(sys.argv[1]) and os.path.splitdrive(sys.argv[1])[0] else []);p=next((x for x in c if os.path.isfile(x)),None);p or sys.exit(0);sys.excepthook=lambda t,v,b:(sys.stderr.write('guarda_git: falha ao carregar, comando NAO avaliado (%s)'%t.__name__+chr(10)),sys.stderr.flush(),os._exit(0));runpy.run_path(p,run_name='__main__')\" \"${CLAUDE_PLUGIN_ROOT}/hooks/guarda_git.py\"; exit $LASTEXITCODE",
+            "timeout": 15,
+            "shell": "powershell"
+          }
+        ]
+      }
+    ]
+  }
+}

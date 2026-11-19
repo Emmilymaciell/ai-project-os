@@ -1,0 +1,73 @@
+# =============================================================================
+# .gitignore — Emmily AI Project OS
+#
+# Este repositorio versiona a PLATAFORMA: skills, agents, templates, scripts,
+# hooks, documentacao e decisoes. Ele NAO versiona nenhum projeto governado,
+# nenhum dado de trabalho e nenhum segredo.
+# =============================================================================
+
+# --- Python -------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/
+
+# --- Node ---------------------------------------------------------------------
+node_modules/
+package-lock.json
+
+# --- Segredos -----------------------------------------------------------------
+# .env.example E versionado de proposito; o .env real nunca.
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.pfx
+*.p12
+*token*
+*secret*
+*credential*
+.msal_cache*
+# Nomes canonicos que os curingas acima NAO pegam. Lacuna encontrada pelo
+# proprio scanner na subfase 2.3, verificando os alvos com git check-ignore.
+id_rsa
+id_dsa
+id_ecdsa
+id_ed25519
+service-account.json
+
+# --- Saidas de execucao -------------------------------------------------------
+/logs/*
+!/logs/.gitkeep
+/artifacts/*
+!/artifacts/.gitkeep
+/tmp/
+/temp/
+scratchpad/
+.scratchpad/
+# worktrees do Claude Code: repositorios embutidos, nunca conteudo deste repo
+.claude/worktrees/
+
+# --- Nenhum documento operacional entra aqui ----------------------------------
+# O OS e texto e codigo. Se um binario de Office aparecer neste repo,
+# quase certamente e engano.
+*.xlsx
+*.xlsm
+*.docx
+*.pptx
+*.pdf
+*.pbix
+
+# --- Lixo de SO / editor ------------------------------------------------------
+~$*
+*.tmp
+*.bak
+Thumbs.db
+desktop.ini
+.DS_Store
+*.swp
+.vscode/
+.idea/

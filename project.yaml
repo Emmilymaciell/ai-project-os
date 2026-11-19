@@ -1,0 +1,187 @@
+# Manifesto do proprio Project OS.
+#
+# Usa o mesmo schema de templates/project-standard/project.yaml. Nao existe
+# formato paralelo para a plataforma: se o schema nao serve para ela, nao
+# serve para os projetos que ela governa.
+#
+# Este arquivo descreve o que EXISTE hoje. Integracao futura nao aparece aqui
+# como implementada - o roadmap fica em docs/STATE.md, e afirmar capacidade
+# inexistente num manifesto e o modo mais barato de mentir para quem chega.
+
+identidade:
+  nome: "emmily-ai-project-os"
+  titulo: "Emmily AI Project OS"
+  descricao: "Plataforma que cria, governa, versiona, documenta e torna portateis os projetos de desenvolvimento assistido por IA da Emmily."
+  categoria: "platform"
+  cliente: "pessoal"
+  criado_em: "2026-09-05"
+  versao: "0.1.0"                       # coerente com a tag v0.1.0; a Fase 2 fecha em 0.2.0
+
+classificacao:
+  porte: "plataforma"                   # governa outras coisas
+  # ALTA por criticidade OPERACIONAL, nao por classificacao de dados.
+  # Esta plataforma decide como projetos sao criados, versionados, revisados e
+  # publicados - inclusive projetos corporativos. Um defeito aqui nao quebra um
+  # projeto: quebra a garantia de todos, e pode publicar o que nao devia.
+  criticidade: "alta"
+  # TRUE, e a distincao com 'criticidade' continua valendo - os dois campos sao
+  # independentes e cada um e verdadeiro pelo seu proprio motivo:
+  #   criticidade: alta      -> por criticidade OPERACIONAL (ela governa outros
+  #                             projetos), nao por classificacao de dados
+  #   dados_sensiveis: true  -> porque o repositorio TOCA dado corporativo de
+  #                             terceiro, que e literalmente a definicao do
+  #                             campo no schema do template
+  #
+  # Ficou 'false' por um raciocinio que parecia razoavel e nao era: "o
+  # CODIGO-FONTE da plataforma nao contem dado corporativo". O
+  # security-reviewer desmontou - o campo nao pergunta sobre o codigo-fonte,
+  # pergunta sobre o repositorio, e a excecao declarada logo abaixo diz que ele
+  # toca. Aqui nao houve subverificacao porque 'criticidade: alta' ja forcava
+  # qa+security; o problema e o padrao, porque ferramenta que le so o booleano
+  # deriva rigor menor - e esta plataforma governa outros repositorios.
+  dados_sensiveis: true
+  # LEGIVEL POR MAQUINA, e nao so no comentario acima.
+  #
+  # O security-reviewer apontou o padrao na subfase 2.3: a excecao existia,
+  # estava explicada, e estava em COMENTARIO - que nenhuma ferramenta le. O
+  # campo dizia 'false' e o repositorio continha a excecao. Aqui nao houve
+  # subverificacao porque 'criticidade: alta' ja forcava qa+security, mas num
+  # projeto de criticidade media a mesma prosa produziria rigor menor.
+  #
+  # Excecao nao e prosa: e campo. Ha teste que exige que cada caminho
+  # declarado aqui exista em disco - excecao apontando para arquivo que nao
+  # existe mais e excecao esquecida.
+  # Excecao APROVADA. Estreita de proposito: vale para este caminho E esta
+  # categoria de achado, e para mais nada. Ver ADR-0010.
+  #
+  # O achado NAO e silenciado: continua no relatorio, com a severidade
+  # original, em secao propria, citando esta entrada. E sob '-ParaPublicacao'
+  # ela e ignorada - publicar exige sanitizar, nao exige excecao.
+  dados_sensiveis_excecoes:
+    - caminho: "docs/audits/2026-09-05-fase0-auditoria.md"
+      categoria: "e-mail que nao assina commits deste repositorio"
+      natureza: "e-mail de coordenacao de organizacao terceira (Programa) e o e-mail corporativo da propria mantenedora, num relatorio de auditoria de ambiente"
+      justificativa: "repositorio privado (ADR-0003, visibilidade PRIVATE confirmada pela API) e uso permitido no ambiente da mantenedora. O blob ja esta no remoto desde a Fase 0, entao sanitizar o working tree nao desfaria a exposicao; reescrever historico e destrutivo e desproporcional para este achado."
+      decisao: "aceito por excecao no fluxo privado. Publicacao ou export publico continua exigindo sanitizacao - rodar security-scan.ps1 -ParaPublicacao antes."
+      status: "aceito-por-excecao"
+      decidido_em: "2026-09-08"
+      escopo: "privado"
+      onde_esta_registrado: "docs/decisions/ADR-0010-excecoes-de-seguranca-aprovadas.md"
+    # Ha uma segunda excecao aceita (2026-10-16): nome de pessoa fisica terceira
+    # em um contrato do registry privado (provenance H4 opcao C; removido na versao publica).
+    # Fica SO no ADR-0010 (emenda de 2026-10-16), nao nesta lista: nenhum
+    # detector emite essa categoria, e a suite docs recusa categoria sem
+    # detector - a entrada nunca casaria. Publicar exige revisao manual dela.
+  componente_llm: false                 # hoje. Vira true na Fase 3, com o Orchestrator
+
+versionamento:
+  git: true
+  branch_padrao: "main"
+  remoto: "https://github.com/Emmilymaciell/ai-project-os"
+  visibilidade: "privado"               # confirmado pela API: isPrivate true
+
+verificacao:
+  # Sem numero de proposito: contagem em comentario envelhece a cada subfase.
+  # Quem quer o numero roda tests/run-tests.ps1 -List.
+  tests: true                           # suites em tests/suites/
+  # FALSE de proposito: nao existe comportamento probabilistico na plataforma
+  # para medir. O primeiro sera o Orchestrator, na Fase 3. Pasta de eval vazia
+  # mentiria sobre maturidade (politica 4.4), entao evals/ so tem um README
+  # explicando por que esta vazia.
+  evals: false
+  integration_tests: false              # gh, n8n e Notion ainda nao tem mock nem teste
+  security_check: true                  # scripts/security-scan.ps1 + os detectores de scripts/lib/
+  ci: false                             # subfase 2.8. Nao existe .github/workflows/
+  revisao_independente: "qa+security"   # derivado de criticidade alta (ADR-0007)
+  # Os tres campos abaixo nasceram na subfase 2.4 e sao canonicos para todo
+  # projeto governado. Eles ficaram fora daquele commit, e o security-reviewer
+  # apontou: era a mesma podridao direcional do placeholder TEST_CMD que a 2.4 tinha
+  # acabado de corrigir, agora no sentido template -> plataforma.
+  comando: '.\tests\run-tests.ps1'
+  criterio_de_pronto: "a suite completa passa, plugin validate passa nas tres camadas, o fluxo privado sai com 0 e a publicacao sai com 1"
+  limites: {}
+
+  # Quais verificacoes o hook de pre-push compoe (subfase 2.6). Vocabulario
+  # FECHADO - security, doctor, tests, nenhum - e valor fora dele BARRA o
+  # push, nomeando o valor: o que o leitor nao entende nunca pode virar
+  # "entao nao precisa". Mesma direcao decidida na 2.5 para verificacao.tests.
+  #
+  # Campo AUSENTE nao e "nao verifique": cai no padrao (security + doctor).
+  # ["nenhum"] e o desligamento EXPLICITO. A diferenca entre os dois e a mesma
+  # que ambiente.dependencias faz entre "nao tenho" e "nao pensei".
+  #
+  # 'tests' NAO esta aqui, nem mesmo nesta plataforma, que tem suite propria:
+  # ela leva ~12 min, e um portao de 12 min em todo push ensina --no-verify em
+  # uma semana. A suite completa continua sendo criterio de PRONTO, rodada no
+  # fechamento de subfase - que e quando ela responde alguma coisa.
+  # Lista de BLOCO, nao de fluxo: o leitor de manifesto desta plataforma nao
+  # le ["a", "b"] - e o item 42 do backlog, e ele devolveria a linha inteira
+  # como UM valor. O hook barra nesse caso em vez de adivinhar, e diz que a
+  # causa e a forma da lista.
+  hooks:
+    pre_push:
+      - "doctor"
+      - "security"
+
+execucao:
+  modo_atual: "main-claude"             # sequencial. Worktrees ficam para a Fase 3
+  nivel_autonomia: 4                    # editar e preparar commit; commit e push so com pedido explicito
+
+ambiente:
+  python: "nao-usa"                     # a plataforma e PowerShell; projetos governados usam Python
+  node: "nao-usa"
+  powershell: "5.1"
+  # LEGIVEL POR MAQUINA. O campo abaixo ('dependencias_externas') continua
+  # narrativo, para quem le; este e o que o /os:doctor cobra. Semantica
+  # decidida pela mantenedora em 2026-09-17:
+  #   campo AUSENTE -> WARN: dependencias ainda nao declaradas
+  #   []            -> declaracao EXPLICITA de que nao ha. Valido, nao WARN
+  #   lista         -> o doctor verifica SOMENTE o que esta aqui
+  # Ausencia de ferramenta que o projeto nao declara usar nao e diagnostico
+  # negativo: um doctor que reclamasse de 'gh' num projeto sem GitHub seria
+  # ruido, e detector que se ignora nao protege nada.
+  #
+  # 'obrigatoria: true' significa que uma capacidade DECLARADA depende dela -
+  # aqui, que 'verificacao.comando' nao roda sem ela. Obrigatoria e ausente
+  # derruba para FAIL; opcional e ausente e WARN.
+  dependencias:
+    - ferramenta: "git"
+      para: "versionamento, e os tres predicados de estado do repositorio"
+      obrigatoria: true
+    - ferramenta: "gh"
+      para: "visibilidade do remoto na varredura de exposicao"
+      obrigatoria: false
+  # Os dois campos falam da mesma coisa em formatos diferentes, e isso esta no
+  # backlog: dois registros do mesmo fato divergem com o tempo.
+  dependencias_externas:
+    - "Claude Code CLI 2.1.252 (~/.local/bin/claude.exe) - validacao e carregamento do plugin"
+    - "Git 2.55+"
+    - "GitHub CLI 2.100 - remoto, e futuramente PR e CI"
+    - "PyPI - a suite project-tests instala pytest num .venv descartavel para exercitar a trilha Python do template. Download, nunca upload; nada sai da maquina. Sem rede, esse caso reporta que NAO conseguiu verificar"
+
+plugin:
+  # Fora do schema padrao porque so a plataforma e um plugin. Os projetos
+  # governados nao tem este bloco.
+  nome: "os"                            # produz o namespace /os:*
+  marketplace: "emmily-platform"        # marketplace local, ADR-0004
+  skills: 7                             # new-project, resume, checkpoint, status, handoff, security, doctor
+  agents: 2                             # qa-reviewer, security-reviewer (read-only, ADR-0008)
+  # Hooks de PLUGIN do Claude Code (hooks/hooks.json). Um: o guarda PreToolUse
+  # de git destrutivo para agentes (hooks/guarda_git.py, incidente r13,
+  # 2026-10-16). Os hooks de GIT da 2.6 sao outra coisa e vivem em githooks/.
+  # Vale numa sessao so depois de atualizar/reinstalar o plugin (cache
+  # congelado). Ver docs/runbooks/hooks.md e o item 96 do backlog.
+  hooks: 1
+  mcp_servers: 0
+
+portfolio:
+  elegivel: true
+  # NENHUMA hoje. Tornar publico exige sanitizar o relatorio da Fase 0, que
+  # descreve estrutura de pastas corporativas. Publicar e ato deliberado.
+  exposicao: "nenhuma"
+
+estado:
+  fase: "Fase 2 - Qualidade, em andamento (2.0 a 2.7 concluidas; programa vNext recebido em 2026-10-08 - ver Proximo passo em docs/STATE.md)"
+  ultimo_checkpoint: "v0.1.0 - 2026-09-08"
+  # O estado detalhado, o roadmap e as limitacoes conhecidas vivem em
+  # docs/STATE.md. Aqui fica so o ponteiro.

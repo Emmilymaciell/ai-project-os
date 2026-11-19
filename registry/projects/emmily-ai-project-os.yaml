@@ -1,0 +1,65 @@
+# Contrato da propria plataforma (versao publica sanitizada). Intencao, nao estado medido.
+contract_version: 1
+identity:
+  id: emmily-ai-project-os
+  name: Emmily AI Project OS
+  type: PROJECT
+  category: PLATFORM
+  status: active
+  criticality: high
+  description: 'A plataforma: cria, governa e protege os demais projetos'
+workspace:
+  local_path: '${AI_WORKSPACE}\_platform\emmily-ai-project-os'
+git:
+  enabled: true
+  default_branch: main
+  remote: https://github.com/Emmilymaciell/ai-project-os
+  visibility: private
+  worktrees_policy: preserve-all
+cloud:
+  drive_root: 00 PLATFORM/emmily-ai-project-os
+state:
+  strategy: git-only
+data:
+  - path: artifacts
+    policy: none
+    note: evidencia de sessao (coletas, vereditos, mutacoes); o que importa esta resumido no docs/STATE.md
+environment:
+  runtime: mixed
+  version: PowerShell 5.1 + Python 3.13
+  manifest: project.yaml
+  bootstrap: '.\scripts\bootstrap.ps1'
+  test_command: '.\tests\run-tests.ps1'
+  smoke_command: '& .\tests\run-tests.ps1 -Suite docs,policy,vnext'
+secrets:
+  manifest: cofre.manifest
+  store: local-env
+backup:
+  wip: snapshot
+ai:
+  canonical:
+    - docs/STATE.md
+    - docs/decisions
+    - docs/vnext/EXECUCAO.md
+    - AGENTS.md
+  adapters:
+    - CLAUDE.md
+    - AGENTS.md
+portability:
+  target_level: L6
+ownership:
+  declared_owner: Emmily Maciel
+  owner_github: Emmilymaciell
+  creators:
+    - Emmily Maciel
+  contributors: []
+  tool_accounts:
+    - 'assistentes de IA (Claude Code, Codex) usados como ferramenta, sem autoria'
+  license: proprietary
+  third_party: []
+  provenance_file: PROVENANCE.md
+  signing: required
+  identities:
+    - Emmily Maciel
+  evidence:
+    - 'exemplo: identidades Git do repo levantadas por git log --all'

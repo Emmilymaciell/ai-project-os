@@ -1,0 +1,12 @@
+# Dependencias Python deste projeto.
+#
+# O bootstrap.ps1 le este arquivo e instala tudo no .venv/ do projeto.
+#
+# Fixe um teto de versao no que puder quebrar: "pytest>=9,<10" e melhor que
+# "pytest>=9". Sem teto, uma major nova quebra a suite sem nada no repositorio
+# tendo mudado, e o culpado fica invisivel.
+#
+# Se o projeto nao usa Python, APAGUE este arquivo - o /os:new-project deveria
+# ter apagado.
+
+pytest>=9,<10

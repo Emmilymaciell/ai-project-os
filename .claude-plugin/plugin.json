@@ -1,0 +1,18 @@
+{
+  "name": "os",
+  "description": "Emmily AI Project OS — cria, governa, versiona, documenta e torna portateis os projetos de desenvolvimento assistido por IA. Fornece os comandos /os:new-project, /os:resume, /os:checkpoint, /os:status, /os:handoff, /os:security e /os:doctor.",
+  "version": "0.1.4",
+  "author": {
+    "name": "Emmily Maciel",
+    "url": "https://github.com/Emmilymaciell"
+  },
+  "keywords": [
+    "project-management",
+    "versioning",
+    "portability",
+    "workflow",
+    "handoff",
+    "security",
+    "diagnostics"
+  ]
+}

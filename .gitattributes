@@ -1,0 +1,26 @@
+# Fim de linha explicito por repositorio.
+#
+# Isto e o que permite manter o core.autocrlf=true do escopo *system* intacto
+# (mexer nele afetaria os repositorios existentes da Emmily) sem que este
+# repositorio produza ruido de CRLF a cada commit.
+* text=auto eol=lf
+
+# Scripts do PowerShell rodam melhor com CRLF no Windows.
+*.ps1 text eol=crlf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Texto que queremos ver como diff legivel no git gui / gitk.
+*.md   text
+*.json text
+*.yaml text
+*.yml  text
+*.py   text
+*.txt  text
+
+# Binarios: nunca converter. Nao deveriam aparecer aqui (ver .gitignore),
+# mas se um asset de skill entrar, entra intacto.
+*.png  binary
+*.jpg  binary
+*.pdf  binary
+*.zip  binary

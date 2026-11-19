@@ -1,0 +1,19 @@
+#!/bin/sh
+# os-hooks-versao: 1
+#
+# Hook VERSIONADO do Emmily AI Project OS. Ativado por 'core.hooksPath', nunca
+# copiado para .git/hooks: o que nao e copiado nao diverge da origem, e um
+# clone novo se configura por 'scripts/install-hooks.ps1'.
+#
+# Este arquivo e um shim de duas linhas de proposito. Toda a decisao vive no
+# .ps1 que ele chama, onde os testes alcancam sem precisar de um commit real.
+#
+# MEDIDO: o diretorio corrente de um hook e o topo da working tree, e
+# 'core.hooksPath' relativo resolve contra ele - o hook disparou identico a
+# partir da raiz e de um subdiretorio. Ainda assim a resolucao abaixo parte do
+# PROPRIO arquivo, e nao do diretorio corrente: depender do cwd e supor.
+#
+# Aspas em toda expansao: caminho de projeto no OneDrive tem espaco.
+
+dir=$(dirname "$0")
+exec powershell -NoProfile -ExecutionPolicy Bypass -File "$dir/../scripts/hook-pre-push.ps1"
