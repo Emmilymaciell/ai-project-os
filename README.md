@@ -57,13 +57,12 @@ Referência técnica completa: [`docs/architecture/EMMILY-AI-PROJECT-OS-TECHNICA
 | Métrica | Valor | Fonte |
 |---|---|---|
 | Casos de teste PowerShell (`Test-Caso`) | 504, coleta completa 504/504 | cabeçalho de `docs/STATE.md` (conferido contra o disco por `tests/suites/docs.ps1`) |
-| Testes `unittest` do motor `eos` | `Ran 371 tests ... OK (skipped=1)` na coleta r14/r16 | `docs/STATE.md` |
+| Testes `unittest` do motor `eos` | `Ran 371 tests ... OK (skipped=1)` na coleta r14/r16 (anterior; em 19/11/2026: 375 OK, 2 skipped — ver Verificação) | `docs/STATE.md` |
 | ADRs | 19 | `docs/decisions/` |
 | Skills / agentes | 7 skills, 2 agentes revisores | `docs/STATE.md` (Parcial) |
 | Projetos governados no fechamento do vNext | 30 contratos válidos; 22/22 PROJECT em L6 SAFE | `docs/FINAL-ACCEPTANCE.md` |
 | Rodadas de revisão independente da guarda de git | r14–r18, código APROVADO por QA e Security | `docs/FINAL-ACCEPTANCE.md` |
 | Linhas de código (motor + scripts + hooks) | ≈ 15,4 mil (`wc -l`) | código desta cópia |
-| Tempo economizado | [a confirmar pela autora] | — |
 
 > Na versão pública o registry real foi trocado por 3 contratos fictícios e 1 teste foi marcado `skip`, então uma execução aqui mostra `skipped=2` e `3 contrato(s) valido(s)`.
 
@@ -87,6 +86,16 @@ py -3.13 -m unittest eos.tests.test_contract eos.tests.test_novo
 ```
 
 Para usar como plugin: `.\scripts\bootstrap.ps1` (cria a árvore do workspace, ativa os hooks de Git) e registre o marketplace local conforme `docs/SETUP.md`. Integrações reais (GitHub privado, Google Drive via rclone, Bitwarden) exigem login próprio (gates H1, `docs/user/14-HUMAN-GATES.md`).
+
+## Limitações conhecidas
+
+- Feito para **Windows + PowerShell 5.1**; os scripts e as suítes `.ps1` não foram portados para Linux/macOS.
+- Os revisores `qa-reviewer` e `security-reviewer` só são acionáveis por `claude -p --agent <nome> --plugin-dir <repo>`; com a sessão OAuth do CLI expirada não há revisão independente (`docs/STATE.md`, "Pendências e limitações conhecidas").
+- O fluxo de branch/PR é **client-side**: branch protection e rulesets exigem GitHub Pro em repositório privado, então não há enforcement no servidor (ADR-0011).
+- `claude plugin eval` estava em early access e indisponível na conta; a infraestrutura de evals não foi construída sobre ele.
+- O hook `pre-commit` varre o repositório inteiro, não só o que está em staging; o custo cresce com o projeto (`docs/STATE.md`, item 97).
+- Integrações reais (GitHub privado, Google Drive via rclone, Bitwarden) exigem login próprio; nesta cópia o registry é fictício e 1 teste fica em `skip`.
+- A coleta completa do motor é pesada (876 s em 19/11/2026); as suítes PowerShell devem rodar uma por vez.
 
 ## O que eu decidi × o que a IA gerou
 

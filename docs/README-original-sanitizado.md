@@ -50,13 +50,13 @@ emmily-ai-project-os/
 
 ## Instalação em outra máquina
 
-Ver [docs/SETUP.md](docs/SETUP.md). Resumo: clonar, rodar `scripts/bootstrap.ps1`, registrar o marketplace local.
+Ver [docs/SETUP.md](../docs/SETUP.md). Resumo: clonar, rodar `scripts/bootstrap.ps1`, registrar o marketplace local.
 
-O `bootstrap.ps1` também **ativa os hooks de Git** (`core.hooksPath` → `githooks/`), de forma idempotente. Eles barram mensagem de commit estruturalmente inválida, segredo entrando no working tree e push sem as verificações que o manifesto declara — e são **contornáveis com `--no-verify`, por desenho**. Ver [docs/runbooks/hooks.md](docs/runbooks/hooks.md).
+O `bootstrap.ps1` também **ativa os hooks de Git** (`core.hooksPath` → `githooks/`), de forma idempotente. Eles barram mensagem de commit estruturalmente inválida, segredo entrando no working tree e push sem as verificações que o manifesto declara — e são **contornáveis com `--no-verify`, por desenho**. Ver [docs/runbooks/hooks.md](../docs/runbooks/hooks.md).
 
 ## Estado atual
 
-Ver [docs/STATE.md](docs/STATE.md). Decisões arquiteturais em [docs/decisions/](docs/decisions/).
+Ver [docs/STATE.md](../docs/STATE.md). Decisões arquiteturais em [docs/decisions/](../docs/decisions/).
 
 ## Licença e escopo
 
